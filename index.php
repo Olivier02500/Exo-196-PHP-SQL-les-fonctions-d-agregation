@@ -24,6 +24,59 @@
      */
 
     // TODO Votre code ici, commencez par require un des objet de connexion que nous avons fait ensemble.
+    $host ='localhost';
+    $dbname = 'sql_exo';
+    $user = 'root';
+    $pass = '';
+
+    try {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::ERRMODE_EXCEPTION);
+
+
+        $stmt = $pdo->prepare("SELECT MIN(age) as age FROM user");
+        if ($stmt->execute()) {
+            $min = $stmt->fetch();
+            echo "<div>" . "Le plus jeune a " . $min['age'] . "ans." . "</div>";
+        }
+
+        $stmt = $pdo->prepare("SELECT MAX(age) as age FROM user");
+        if ($stmt->execute()) {
+            $min = $stmt->fetch();
+            echo "<div>" . "Le plus a " . $min['age'] . "ans." . "</div>";
+        }
+
+
+        $stmt = $pdo->prepare("SELECT count(*) as number FROM user");
+        if ($stmt->execute()) {
+            $count = $stmt->fetch();
+            echo "nombre d'utilisateur : " . $count['number'] ;
+        }
+
+
+        $stmt = $pdo->prepare("SELECT count(*) as street FROM user");
+        if ($stmt->execute()) {
+            $count = $stmt->fetch();
+            echo "<div>" . "les users ayant un num de rue égale ou supp a 5 " . $count['street'] . "</div>";
+        }
+
+
+        $stmt = $pdo->prepare("SELECT AVG(age) as average FROM user");
+        if ($stmt->execute()) {
+            $average = $stmt->fetch();
+            echo "<div>" . "la moyenne d'âge des utilisateurs :" . $average['average'] . "</div>";
+        }
+
+        $stmt = $pdo->prepare("SELECT SUM(numero) as total FROM user");
+        if ($stmt->execute()){
+            $sum = $stmt->fetch();
+            echo "Somme des numéros de maison des utilisateurs égale à : " . $sum['total'];
+        }
+    }
+    catch (PDOException $e){
+        echo $e->getMessage();
+    }
 
 
     ?>
